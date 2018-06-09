@@ -23,4 +23,5 @@ while IFS= read -r -d $'\0' f; do
 	then
 		du -sx "$f"
 	fi
-done | sort -n -k 1 | tail -20```
+done | sort -n -k 1 | tail -20
+```
