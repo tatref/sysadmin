@@ -12,3 +12,17 @@
 SCSI ID <-> /dev/sdX
 
     # ls -ld /sys/block/sd*/device
+
+# Scan new attached disks
+
+```
+for x in /sys/class/scsi_host/host*/scan
+  echo '- - -' > $x
+done
+```
+
+# Rescan disk size
+
+```
+echo 1 > /sys/block/sdX/device/rescan
+```
