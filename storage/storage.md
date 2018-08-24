@@ -17,6 +17,7 @@ SCSI ID <-> /dev/sdX
 
 ```
 for x in /sys/class/scsi_host/host*/scan
+do
   echo '- - -' > $x
 done
 ```
