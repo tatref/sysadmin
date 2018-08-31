@@ -22,6 +22,12 @@ do
 done
 ```
 
+
+```
+dmesg | tail
+ls -ltr /dev/sd*
+```
+
 # Rescan disk size
 
 ```
