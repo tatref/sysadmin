@@ -1,8 +1,9 @@
-# To list processes in the uninterruptible sleep state
-    
-    ps aux | awk '$8 ~ /^D/ {print $2" "$11}'
+# List processes in D state
+```
+ps aux | awk '$8 ~ /^D/ {print $2" "$11}'
+```
 
-# To simulate stuck processes
+# Simulate D processes
 ```
 yum install nfs-utils rpcbind
 mkdir /nfs_export
@@ -21,4 +22,4 @@ iptables -I INPUT --protocol tcp --dport 2049 -j DROP
 for x in $(seq 0 10); do ls client& done
 ```
 
-Now check load average, ps output...
+Now check load average, ps output
