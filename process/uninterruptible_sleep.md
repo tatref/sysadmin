@@ -1,6 +1,6 @@
 # List processes in D state
 ```
-ps aux | awk '$8 ~ /^D/ {print $2" "$11}'
+ps Haxwwo stat,pid,ppid,user,wchan:25,command | grep -e "^STAT" -e "^D" -e "^Z"
 ```
 
 # Simulate D processes
