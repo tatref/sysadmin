@@ -3,7 +3,7 @@
 
     # ls -l /dev/disk/by-path
 
-## Block devices
+## Block devices (disks/partitions/LVs/...)
 ### Size (bytes)
 
     # blockdev --getsize64 /dev/sda
@@ -32,4 +32,10 @@ ls -ltr /dev/sd*
 
 ```
 echo 1 > /sys/block/sdX/device/rescan
+```
+
+# Rescan partition (RHEL 7+)
+
+```
+partx --update /dev/sdX
 ```
