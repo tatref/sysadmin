@@ -22,6 +22,14 @@ do
 done
 ```
 
+Same for FC
+
+```
+for x in /sys/class/fc_host/host*/issue_lip
+do
+  echo 1 > $x
+done
+```
 
 ```
 dmesg | tail
@@ -38,4 +46,19 @@ echo 1 > /sys/block/sdX/device/rescan
 
 ```
 partx --update /dev/sdX
+```
+
+# Reload multipath devices
+
+```
+multipath
+multipath -k  (interactive mode)
+```
+
+# Rescan partitions
+
+```
+partprobe [/dev/sda]  (disk)
+kpartx  (multipath)
+partx  ls 
 ```
