@@ -1,6 +1,6 @@
 # List processes in D (uninterruptible), Z (zombie), or R (running or runnable) state
 ```
-ps axwwo stat,pid,ppid,pcpu,cputime,rss,nlwp,user,wchan:25,command | grep -e ^STAT -e ^D -e ^Z -e ^R
+ps axwwo stat,pid,ppid,pcpu,etime,cputime,rss,nlwp,user,wchan:25,command | grep -e ^STAT -e ^D -e ^Z -e ^R
 ```
 
 # Simulate D processes
