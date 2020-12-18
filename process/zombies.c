@@ -1,5 +1,5 @@
 // Create zombie processes
-// gcc zombie.c -o zombie
+// gcc zombies.c -o zombies
 
 #include <stdlib.h>
 #include <stdio.h>
