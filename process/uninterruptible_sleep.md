@@ -4,12 +4,12 @@
 
 Threads details (H + lwp)
 ```
-ps Haxwwo stat,lwp,pid,ppid,pcpu,etime,cputime,rss,nlwp,user,wchan:25,command | grep -e ^STAT -e ^D -e ^Z -e ^R
+ps Haxwwo stat,lwp,pid,ppid,pcpu,etime,cputime,rss,nlwp,user,wchan:25,command | grep -e ^STAT -e ^D -e ^R
 ```
 
 Only processes
 ```
-ps axwwo stat,pid,ppid,pcpu,etime,cputime,rss,nlwp,user,wchan:25,command | grep -e ^STAT -e ^D -e ^Z -e ^R
+ps axwwo stat,pid,ppid,pcpu,etime,cputime,rss,nlwp,user,wchan:25,command | grep -e ^STAT -e ^D -e ^R
 ```
 
 # Simulate D processes
