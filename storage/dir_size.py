@@ -28,26 +28,30 @@ infos = {}
 for root in roots:
     org_mount = os.stat(root).st_dev
     root = Path(os.path.abspath(root))
-    for dir, dirs, files in os.walk(root):
-        dir = Path(dir)
-        mount = os.stat(dir).st_dev
-        if mount != org_mount:
-            continue
-        for filename in files:
-            file = Path(os.path.join(dir, filename))
-            if not os.path.isfile(file):
-                continue
-            stat = os.stat(file)
-            size = stat.st_size
-            timestamp = datetime.datetime.fromtimestamp(stat.st_mtime)
-            date = timestamp.date()
-            node = infos.setdefault(date, {'size': 0, 'dirs': {}})
-            infos[date]['size'] += size
-            parts = file.parent.relative_to(root).parts
-            for part in parts:
-                _ = node['dirs'].setdefault(part, {'size': 0, 'dirs': {}})
-                node['dirs'][part]['size'] += size
-                node = node['dirs'][part]
+    queue = [root]
+    while len(queue) > 0:
+        dir = queue.pop()
+        with os.scandir(dir) as it:
+            for entry in it:
+                if entry.is_dir(follow_symlinks=False):
+                    mount = entry.stat().st_dev
+                    if mount != org_mount:
+                        print('Skipping mount {}'.format(entry))
+                        continue
+                    queue.append(entry)
+                if entry.is_file(follow_symlinks=False):
+                    file = Path(os.path.join(dir, entry.name))
+                    stat = os.stat(file)
+                    size = stat.st_size
+                    timestamp = datetime.datetime.fromtimestamp(stat.st_mtime)
+                    date = timestamp.date()
+                    node = infos.setdefault(date, {'size': 0, 'dirs': {}})
+                    infos[date]['size'] += size
+                    parts = file.parent.relative_to(root).parts
+                    for part in parts:
+                        _ = node['dirs'].setdefault(part, {'size': 0, 'dirs': {}})
+                        node['dirs'][part]['size'] += size
+                        node = node['dirs'][part]
 
 if len(infos) == 0:
     print("No files found")
