@@ -26,9 +26,13 @@ elif units.lower() == 'g':
 
 infos = {}
 for root in roots:
+    org_mount = os.stat(root).st_dev
     root = Path(os.path.abspath(root))
     for dir, dirs, files in os.walk(root):
         dir = Path(dir)
+        mount = os.stat(dir).st_dev
+        if mount != org_mount:
+            continue
         for filename in files:
             file = Path(os.path.join(dir, filename))
             if not os.path.isfile(file):
@@ -91,4 +95,3 @@ while True:
             continue
         node = node['dirs'][x]
         currentpath = currentpath / x
-
