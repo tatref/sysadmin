@@ -26,6 +26,16 @@ while IFS= read -r -d $'\0' f; do
 done | sort -n -k 1 | tail -20
 ```
 
+# Files
+
+```
+find /path -mount -type f -printf '%p %s %k\n' | sort > files
+...
+find /path -mount -type f -printf '%p %s %k\n' | sort > files2
+
+diff -u files files2
+```
+
 # dir_size.py
 
 [dir_size](./dir_size.py)
