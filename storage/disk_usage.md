@@ -25,3 +25,7 @@ while IFS= read -r -d $'\0' f; do
   fi
 done | sort -n -k 1 | tail -20
 ```
+
+# dir_size.py
+
+[dir_size](./dir_size.py)
