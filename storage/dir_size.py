@@ -10,6 +10,7 @@
 # ./python dir_size.py /path
 #
 
+
 import sys
 import os
 import datetime
@@ -43,25 +44,28 @@ for root in roots:
         dir = queue.pop()
         with os.scandir(dir) as it:
             for entry in it:
-                if entry.is_dir(follow_symlinks=False):
-                    mount = entry.stat().st_dev
-                    if mount != org_mount:
-                        print('Skipping mount {}'.format(entry))
-                        continue
-                    queue.append(entry)
-                if entry.is_file(follow_symlinks=False):
-                    file = Path(os.path.join(dir, entry.name))
-                    stat = os.stat(file)
-                    size = stat.st_size
-                    timestamp = datetime.datetime.fromtimestamp(stat.st_mtime)
-                    date = timestamp.date()
-                    node = infos.setdefault(date, {'size': 0, 'dirs': {}})
-                    infos[date]['size'] += size
-                    parts = file.parent.relative_to(root).parts
-                    for part in parts:
-                        _ = node['dirs'].setdefault(part, {'size': 0, 'dirs': {}})
-                        node['dirs'][part]['size'] += size
-                        node = node['dirs'][part]
+                try:
+                    if entry.is_dir(follow_symlinks=False):
+                        mount = entry.stat().st_dev
+                        if mount != org_mount:
+                            print('Skipping mount {}'.format(entry))
+                            continue
+                        queue.append(entry)
+                    if entry.is_file(follow_symlinks=False):
+                        file = Path(os.path.join(dir, entry.name))
+                        stat = os.stat(file)
+                        size = stat.st_size
+                        timestamp = datetime.datetime.fromtimestamp(stat.st_mtime)
+                        date = timestamp.date()
+                        node = infos.setdefault(date, {'size': 0, 'dirs': {}})
+                        infos[date]['size'] += size
+                        parts = file.parent.relative_to(root).parts
+                        for part in parts:
+                            _ = node['dirs'].setdefault(part, {'size': 0, 'dirs': {}})
+                            node['dirs'][part]['size'] += size
+                            node = node['dirs'][part]
+                except Exception as e:
+                    print('Skipping {}: {}'.format(entry, e))
 
 if len(infos) == 0:
     print("No files found")
@@ -77,14 +81,16 @@ end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
 days = (end_date - start_date).days + 1
 
 print('Deltas by date:')
+skipping = False
 for day in range(0, days):
     date = (start_date + datetime.timedelta(days=day)).date()
-    print(date, end=': ')
     if not date in infos:
-        print('0')
+        if not skipping:
+            print('...')
+            skipping = True
         continue
     size = int(infos[date]['size'] / units)
-    print(size)
+    print('{}: {}'.format(date, size))
 
 date = input('Select date? ')
 date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
