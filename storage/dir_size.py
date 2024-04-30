@@ -1,5 +1,14 @@
 #!/usr/bin/python3
 # Python 3.6+
+#
+# wget https://www.python.org/ftp/python/3.12.3/Python-3.12.3.tar.xz
+# tar xf Python-3.12.3.tar.xz
+# cd Python-3.12.3
+# ./configure --without-ssl && make -j4
+# ./python
+#
+# ./python dir_size.py /path
+#
 
 import sys
 import os
